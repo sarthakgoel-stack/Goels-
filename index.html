@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STREAT — Streetwear & Casual Fits</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:         #0A0A0A;
+      --surface:    #141414;
+      --elevated:   #1E1E1E;
+      --border:     #2A2A2A;
+      --accent:     #FF2D2D;
+      --yellow:     #FFE500;
+      --text:       #FFFFFF;
+      --muted:      #888888;
+      --font-d:     'Bebas Neue', sans-serif;
+      --font-b:     'Inter', sans-serif;
+      --font-m:     'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: var(--font-d);
+      font-size: 2rem; letter-spacing: 5px; color: var(--text);
+    }
+    .logo em { color: var(--accent); font-style: normal; }
+
+    nav { display: flex; gap: 2rem; align-items: center; }
+
+    nav a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+
+    .nav-pill {
+      background: var(--accent) !important;
+      color: var(--text) !important;
+      padding: 0.45rem 1.25rem;
+      border-radius: 2px;
+    }
+    .nav-pill:hover { opacity: 0.88; }
+
+    /* ─── HERO ────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 2.5rem 5rem;
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: -100px; right: -150px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,45,45,0.13) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -100px; left: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,229,0,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      font-family: var(--font-m);
+      font-size: 0.7rem; color: var(--accent);
+      letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-d);
+      font-size: clamp(5.5rem, 16vw, 15rem);
+      line-height: 0.88;
+      letter-spacing: -1px;
+      margin-bottom: 1.75rem;
+    }
+    .hero-title .red { color: var(--accent); }
+    .hero-title .stroke {
+      -webkit-text-stroke: 2px var(--text);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 460px; line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; align-items: center; }
+
+    .btn-primary {
+      background: var(--accent); color: var(--text);
+      padding: 0.95rem 2.5rem;
+      border: none; border-radius: 2px;
+      font-family: var(--font-b); font-size: 0.82rem;
+      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #FF4545; transform: translateY(-2px); }
+
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      padding: 0.95rem 2.5rem;
+      border: 1px solid var(--border); border-radius: 2px;
+      font-family: var(--font-b); font-size: 0.82rem;
+      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--muted); transform: translateY(-2px); }
+
+    .hero-stats {
+      position: absolute; right: 4rem; bottom: 5rem;
+      display: flex; flex-direction: column; gap: 2.5rem; text-align: right;
+    }
+    .stat-n {
+      font-family: var(--font-d);
+      font-size: 4rem; line-height: 1; color: var(--text);
+    }
+    .stat-l {
+      font-family: var(--font-m);
+      font-size: 0.65rem; color: var(--muted);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    /* ─── MARQUEE ─────────────────────────────────── */
+    .ticker {
+      background: var(--accent);
+      padding: 0.8rem 0; overflow: hidden; white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-flex;
+      animation: scroll 28s linear infinite;
+    }
+    .ticker-inner span {
+      font-family: var(--font-d);
+      font-size: 1.1rem; letter-spacing: 3px;
+      padding: 0 1.5rem; color: var(--text);
+    }
+    .ticker-inner .sep { color: rgba(255,255,255,0.45); padding: 0; }
+
+    @keyframes scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─── PRODUCTS ────────────────────────────────── */
+    .shop {
+      padding: 5rem 2.5rem;
+    }
+
+    .shop-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+
+    .shop-title {
+      font-family: var(--font-d);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      letter-spacing: 2px; line-height: 1;
+    }
+    .shop-title small {
+      display: block;
+      font-family: var(--font-m); font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 3px;
+      font-weight: 400; margin-bottom: 0.4rem;
+    }
+
+    .count {
+      font-family: var(--font-m);
+      font-size: 0.7rem; color: var(--muted); letter-spacing: 1px;
+    }
+
+    /* Filters */
+    .filters {
+      display: flex; gap: 0.5rem;
+      margin-bottom: 3rem; flex-wrap: wrap;
+    }
+    .f-btn {
+      padding: 0.55rem 1.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted); border-radius: 2px;
+      font-family: var(--font-b); font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .f-btn:hover { color: var(--text); border-color: var(--muted); }
+    .f-btn.on {
+      background: var(--accent); border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.25rem;
+      transition: opacity 0.22s ease;
+    }
+    .grid.fading { opacity: 0; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px; overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+    }
+    .card.hide { display: none; }
+
+    .card-vis {
+      height: 210px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .card-icon {
+      font-size: 5rem;
+      filter: drop-shadow(0 10px 28px rgba(0,0,0,0.6));
+      transition: transform 0.4s ease;
+      user-select: none;
+    }
+    .card:hover .card-icon { transform: scale(1.12) rotate(-6deg); }
+
+    .badge {
+      position: absolute; top: 0.9rem; left: 0.9rem;
+      background: var(--yellow); color: #000;
+      font-family: var(--font-m); font-size: 0.6rem;
+      font-weight: 700; padding: 0.2rem 0.5rem;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .badge.red { background: var(--accent); color: var(--text); }
+
+    .card-body { padding: 1.2rem; }
+
+    .card-cat {
+      font-family: var(--font-m);
+      font-size: 0.6rem; color: var(--accent);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .card-name {
+      font-size: 0.95rem; font-weight: 600; color: var(--text);
+      margin-bottom: 0.9rem;
+    }
+    .card-foot {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .price {
+      font-family: var(--font-m);
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--yellow);
+    }
+    .add {
+      width: 36px; height: 36px;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      color: var(--muted); border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.25rem;
+      transition: all 0.2s;
+    }
+    .add:hover { background: var(--accent); border-color: var(--accent); color: var(--text); }
+    .add.done { background: #22c55e; border-color: #22c55e; color: #fff; }
+
+    /* ─── FOOTER ──────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .f-logo {
+      font-family: var(--font-d);
+      font-size: 1.6rem; letter-spacing: 5px; color: var(--text);
+    }
+    .f-logo em { color: var(--accent); font-style: normal; }
+
+    .f-copy {
+      font-family: var(--font-m);
+      font-size: 0.65rem; color: var(--muted); letter-spacing: 1px;
+    }
+    .f-links { display: flex; gap: 1.5rem; }
+    .f-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.8rem; transition: color 0.2s;
+    }
+    .f-links a:hover { color: var(--text); }
+
+    /* ─── TOAST ───────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--elevated); border: 1px solid var(--accent);
+      color: var(--text); padding: 0.8rem 1.5rem;
+      border-radius: 3px; font-size: 0.85rem; font-weight: 500;
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s ease; z-index: 999;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ─── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 768px) {
+      header { padding: 0.9rem 1.2rem; }
+      nav { gap: 1rem; }
+      nav a:not(.nav-pill) { display: none; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .hero-stats { display: none; }
+      .shop { padding: 3rem 1.5rem; }
+      .shop-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ══════════════════════════════════════════ -->
+<header>
+  <div class="logo">STR<em>E</em>AT</div>
+  <nav>
+    <a href="#" onclick="filterTo('men')">Men</a>
+    <a href="#" onclick="filterTo('women')">Women</a>
+    <a href="#" onclick="filterTo('kids')">Kids</a>
+    <a href="#" onclick="filterTo('accessories')">Accessories</a>
+    <a href="#shop" class="nav-pill">Shop Now</a>
+  </nav>
+</header>
+
+<!-- ═══ HERO ══════════════════════════════════════════ -->
+<section class="hero">
+  <p class="eyebrow">// New Collection 2025</p>
+  <h1 class="hero-title">
+    WEAR<br>
+    <span class="red">YOUR</span><br>
+    <span class="stroke">VIBE</span>
+  </h1>
+  <p class="hero-sub">Street-ready fits, curated for the bold. From oversized tees to cargo essentials — dress like you mean it.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Collection</button>
+    <button class="btn-ghost">Our Story</button>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-n">200+</div>
+      <div class="stat-l">Styles Available</div>
+    </div>
+    <div>
+      <div class="stat-n">4</div>
+      <div class="stat-l">Categories</div>
+    </div>
+    <div>
+      <div class="stat-n">₹399</div>
+      <div class="stat-l">Starting From</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══════════════════════════════════════ -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>STREETWEAR</span><span class="sep">●</span>
+    <span>CASUAL FITS</span><span class="sep">●</span>
+    <span>URBAN STYLE</span><span class="sep">●</span>
+    <span>MEN</span><span class="sep">●</span>
+    <span>WOMEN</span><span class="sep">●</span>
+    <span>KIDS</span><span class="sep">●</span>
+    <span>ACCESSORIES</span><span class="sep">●</span>
+    <span>NEW DROPS EVERY WEEK</span><span class="sep">●</span>
+    <!-- duplicate for seamless loop -->
+    <span>STREETWEAR</span><span class="sep">●</span>
+    <span>CASUAL FITS</span><span class="sep">●</span>
+    <span>URBAN STYLE</span><span class="sep">●</span>
+    <span>MEN</span><span class="sep">●</span>
+    <span>WOMEN</span><span class="sep">●</span>
+    <span>KIDS</span><span class="sep">●</span>
+    <span>ACCESSORIES</span><span class="sep">●</span>
+    <span>NEW DROPS EVERY WEEK</span><span class="sep">●</span>
+  </div>
+</div>
+
+<!-- ═══ SHOP ══════════════════════════════════════════ -->
+<section class="shop" id="shop">
+  <div class="shop-header">
+    <div class="shop-title">
+      <small>// The Collection</small>
+      SHOP ALL
+    </div>
+    <div class="count" id="count">17 STYLES</div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="f-btn on" data-f="all">All Styles</button>
+    <button class="f-btn" data-f="men">Men's Wear</button>
+    <button class="f-btn" data-f="women">Women's Wear</button>
+    <button class="f-btn" data-f="kids">Kids' Wear</button>
+    <button class="f-btn" data-f="accessories">Accessories</button>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid" id="grid">
+
+    <!-- ── MEN'S ── -->
+    <div class="card" data-c="men">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">
+        <span class="card-icon">👕</span>
+        <span class="badge">New</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Men's Wear</div>
+        <div class="card-name">Oversized Graphic Tee</div>
+        <div class="card-foot">
+          <div class="price">₹799</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="men">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1c1c1c,#2d2d2d)">
+        <span class="card-icon">👖</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Men's Wear</div>
+        <div class="card-name">Cargo Pants</div>
+        <div class="card-foot">
+          <div class="price">₹1,499</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="men">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a0505,#3d1515)">
+        <span class="card-icon">🧥</span>
+        <span class="badge red">Hot</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Men's Wear</div>
+        <div class="card-name">Street Hoodie</div>
+        <div class="card-foot">
+          <div class="price">₹1,299</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="men">
+      <div class="card-vis" style="background:linear-gradient(135deg,#0d1b0d,#1a3a1a)">
+        <span class="card-icon">🧥</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Men's Wear</div>
+        <div class="card-name">Bomber Jacket</div>
+        <div class="card-foot">
+          <div class="price">₹2,999</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="men">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a1500,#35280a)">
+        <span class="card-icon">👖</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Men's Wear</div>
+        <div class="card-name">Relaxed Track Pants</div>
+        <div class="card-foot">
+          <div class="price">₹999</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WOMEN'S ── -->
+    <div class="card" data-c="women">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a0a1a,#3d153d)">
+        <span class="card-icon">👚</span>
+        <span class="badge">New</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Women's Wear</div>
+        <div class="card-name">Crop Graphic Top</div>
+        <div class="card-foot">
+          <div class="price">₹599</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="women">
+      <div class="card-vis" style="background:linear-gradient(135deg,#0a1220,#152035)">
+        <span class="card-icon">👖</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Women's Wear</div>
+        <div class="card-name">Wide Leg Jeans</div>
+        <div class="card-foot">
+          <div class="price">₹1,299</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="women">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a0a05,#3d1500)">
+        <span class="card-icon">🧥</span>
+        <span class="badge red">Hot</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Women's Wear</div>
+        <div class="card-name">Oversized Hoodie</div>
+        <div class="card-foot">
+          <div class="price">₹1,199</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="women">
+      <div class="card-vis" style="background:linear-gradient(135deg,#0a1a10,#153028)">
+        <span class="card-icon">🧥</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Women's Wear</div>
+        <div class="card-name">Denim Jacket</div>
+        <div class="card-foot">
+          <div class="price">₹2,499</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── KIDS' ── -->
+    <div class="card" data-c="kids">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a1500,#352900)">
+        <span class="card-icon">👕</span>
+        <span class="badge">Kids</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Kids' Wear</div>
+        <div class="card-name">Mini Printed Tee</div>
+        <div class="card-foot">
+          <div class="price">₹399</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="kids">
+      <div class="card-vis" style="background:linear-gradient(135deg,#001a1a,#003535)">
+        <span class="card-icon">🩳</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Kids' Wear</div>
+        <div class="card-name">Kids Cargo Shorts</div>
+        <div class="card-foot">
+          <div class="price">₹599</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="kids">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a001a,#350035)">
+        <span class="card-icon">🧥</span>
+        <span class="badge">New</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Kids' Wear</div>
+        <div class="card-name">Kids Zip Hoodie</div>
+        <div class="card-foot">
+          <div class="price">₹899</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="kids">
+      <div class="card-vis" style="background:linear-gradient(135deg,#001400,#002800)">
+        <span class="card-icon">👖</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Kids' Wear</div>
+        <div class="card-name">Kids Joggers</div>
+        <div class="card-foot">
+          <div class="price">₹699</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ACCESSORIES ── -->
+    <div class="card" data-c="accessories">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a1a00,#333300)">
+        <span class="card-icon">🧢</span>
+        <span class="badge red">Hot</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Accessories</div>
+        <div class="card-name">Snapback Cap</div>
+        <div class="card-foot">
+          <div class="price">₹499</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="accessories">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a0500,#3a0f00)">
+        <span class="card-icon">👜</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Accessories</div>
+        <div class="card-name">Canvas Tote Bag</div>
+        <div class="card-foot">
+          <div class="price">₹699</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="accessories">
+      <div class="card-vis" style="background:linear-gradient(135deg,#0f0f1a,#1e1e35)">
+        <span class="card-icon">📿</span>
+        <span class="badge">New</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Accessories</div>
+        <div class="card-name">Chain Necklace</div>
+        <div class="card-foot">
+          <div class="price">₹399</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-c="accessories">
+      <div class="card-vis" style="background:linear-gradient(135deg,#1a1000,#35200a)">
+        <span class="card-icon">👝</span>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Accessories</div>
+        <div class="card-name">Crossbody Bag</div>
+        <div class="card-foot">
+          <div class="price">₹899</div>
+          <button class="add" title="Add to cart">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════ -->
+<footer>
+  <div class="f-logo">STR<em>E</em>AT</div>
+  <div class="f-copy">© 2025 STREAT. All rights reserved.</div>
+  <div class="f-links">
+    <a href="#">Instagram</a>
+    <a href="#">WhatsApp</a>
+    <a href="#">Shipping Info</a>
+    <a href="#">Contact Us</a>
+  </div>
+</footer>
+
+<div id="toast">✓ Added to cart!</div>
+
+<script>
+  /* ── FILTER ── */
+  const grid  = document.getElementById('grid');
+  const count = document.getElementById('count');
+  const btns  = document.querySelectorAll('.f-btn');
+  const cards = document.querySelectorAll('.card');
+
+  function applyFilter(f) {
+    grid.classList.add('fading');
+    setTimeout(() => {
+      let n = 0;
+      cards.forEach(c => {
+        const show = f === 'all' || c.dataset.c === f;
+        c.classList.toggle('hide', !show);
+        if (show) n++;
+      });
+      count.textContent = n + ' STYLE' + (n !== 1 ? 'S' : '');
+      grid.classList.remove('fading');
+    }, 220);
+
+    btns.forEach(b => b.classList.toggle('on', b.dataset.f === f));
+  }
+
+  btns.forEach(b => b.addEventListener('click', () => applyFilter(b.dataset.f)));
+
+  /* ── NAV QUICK-FILTER ── */
+  function filterTo(cat) {
+    document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => applyFilter(cat), 400);
+  }
+
+  /* ── ADD TO CART ── */
+  const toast = document.getElementById('toast');
+  let toastTimer;
+
+  document.querySelectorAll('.add').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      btn.textContent = '✓';
+      btn.classList.add('done');
+      setTimeout(() => {
+        btn.textContent = '+';
+        btn.classList.remove('done');
+      }, 1800);
+
+      clearTimeout(toastTimer);
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    });
+  });
+</script>
+</body>
+</html>
